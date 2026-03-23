@@ -1,0 +1,21 @@
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pychillplus"
+version = "1.00"
+dependencies = [
+    "tqdm",
+    "numba",
+    "numpy",
+    "scipy",
+    "pandas",
+    "mdtraj",
+]
+
+[project.scripts]
+pychillplus = "chillplus:main"
