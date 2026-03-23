@@ -102,8 +102,12 @@ def calculate_qi_all(positions: np.ndarray,
 ### HELPER AND COMPUTATION FUNCTIONS ###
 
 # ── Module-level worker — must be defined here for pickling ─────────────────
-def process_frame(frameidx: int, traj: str, top: str,
-                  atom_indices: np.ndarray, l: int) -> tuple[int, np.ndarray]:
+def process_frame(
+    frameidx: int,
+    traj: str,
+    top: str,
+    atom_indices: np.ndarray,   # ← indices, not a string
+    l: int) -> tuple[int, np.ndarray]:
     """Load a single frame, compute qi and C_ij, return (frameidx, (n_atoms, 3))."""
 
     frame     = md.load_frame(traj, frameidx, top=top)
@@ -158,7 +162,7 @@ def main():
     parser.add_argument('-j', '--jobs', type=int)
     parser.add_argument('-s', '--top',  type=str, required=True,  help='MDTraj-readable topology file')
     parser.add_argument('-f', '--traj', type=str, required=True,  help='MDTraj-readable trajectory file')
-    parser.add_argument('-o', '--output', type=str, default='chill-plus.csv', help='Output filename in CSV format')
+    parser.add_argument('-o', '--output', type=str, default='chill-plus', help='Output file basename (<o>.frame1234.csv)')
     parser.add_argument('--select', type=str, default='name OW', help='Selection string (default: "name OW")')
     parser.add_argument('-l', type=int, default=3, help='Spherical harmonic l-value (default: 3)')
     args = parser.parse_args()
@@ -206,12 +210,12 @@ def main():
     print("Output dataframe overview:")
     print(df)
 
-    df.to_csv(args.output)
+    df.to_csv(f'{args.output}.csv')
     print(f"""--------------------
-    Output saved to {args.output}.
+    Output(s) saved to {args.output}.csv
     Pandas example for reading the output:
 
-    df_loaded = pd.read_csv('{args.output}', index_col=['frame', 'atom'])
+    df_loaded = pd.read_csv('{args.output}.csv', index_col=['frame', 'atom'])
     # Metric for atom-i from frame-f:
     df_loaded.loc[('frame-f', 'atom-i'), 'coordination']  # or 'eclipsed'/'staggered'
     --------------------""")
