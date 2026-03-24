@@ -206,6 +206,7 @@ def main():
     n_frames = u.trajectory.n_frames
     del u
 
+    print(f"Working dir : {os.getcwd()}")
     print(f"Topology    : {args.top}")
     print(f"Trajectory  : {args.traj}")
     print(f"Selection   : '{args.select}'")
@@ -232,8 +233,6 @@ def main():
     # ── Summary ───────────────────────────────────────────────────────────────
     saved_files.sort()
     print(f'\n{n_frames} CSV file(s) written:')
-    for f in saved_files:
-        print(f'  {f}')
     print(f"""
     --------------------
     NumPy example for reading a single frame's output:
