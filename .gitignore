@@ -2,4 +2,4 @@ __pycache__
 *.egg-info
 build/lib
 build
-build/lib/chillplus.py
+build/*
